@@ -11,11 +11,12 @@ export default class Game extends React.Component {
         super(props)
 
         this.state = {
-            possibleFeedback: ["Hot", "Warm", "Cold", "Ice Cold", "You Won!", "Make your guess!"],
+            possibleFeedback: ["Hot", "Warm", "Cold", "Ice Cold", "You Won! Click New Game to play again", "Make your guess!"],
             currentFeedback: '',
             guessList: [],
             currentGuess: '',
-            correctNum: Math.floor(Math.random() * 100 + 1)
+            correctNum: Math.floor(Math.random() * 100 + 1),
+            newGame: false
         }
     }
 
@@ -23,18 +24,22 @@ export default class Game extends React.Component {
 
         this.setState({currentGuess});
         this.setState({guessList:[...this.state.guessList, currentGuess]});
+        
+        const realNum = parseInt(this.state.correctNum);
+        const userNum = parseInt(currentGuess);
 
-
-        if(currentGuess === this.state.correctNum){
+        console.log(realNum);
+  
+        if(userNum === realNum){
             this.setCurretFeedback(this.state.possibleFeedback[4]);
-        } else if((this.state.correctNum <= currentGuess + 20) && (this.state.correctNum >= currentGuess - 20)) {
-            if((this.state.correctNum <= currentGuess + 10) && (this.state.correctNum >= currentGuess - 10)) {
+        } else if((realNum <= userNum + 20) && (realNum >= userNum - 20)) {
+            if((realNum <= userNum + 10) && (realNum >= userNum - 10)) {
                 this.setCurretFeedback(this.state.possibleFeedback[0]);
             } else {
                 this.setCurretFeedback(this.state.possibleFeedback[1]);
             }
-        } else if((this.state.correctNum > currentGuess + 20) || (this.state.correctNum < currentGuess -20)) {
-            if((this.state.correctNum > currentGuess + 30) || (this.state.correctNum < currentGuess - 30)) {
+        } else if((realNum > userNum + 20) || (realNum < userNum -20)) {
+            if((realNum > userNum + 30) || (realNum < userNum - 30)) {
                 this.setCurretFeedback(this.state.possibleFeedback[3]);
             } else {
                 this.setCurretFeedback(this.state.possibleFeedback[2]);
@@ -45,7 +50,18 @@ export default class Game extends React.Component {
 
     setCurretFeedback(currentFeedback) {
         this.setState({currentFeedback})
-    } 
+    }
+
+    setNewGame() {
+        const newState = Object.assign({}, this.state);
+
+        newState.newGame = true;
+        newState.correctNum = Math.floor(Math.random() * 100 + 1);
+        newState.currentFeedback = "Make your guess!";
+        newState.guessList = [];
+
+        this.setState(newState);
+    }
 
     render() {
 
@@ -53,7 +69,7 @@ export default class Game extends React.Component {
 
         return(
             <div>
-                <Header />
+                <Header newGame={() => {this.setNewGame()}}/>
                 <GuessSection feedback={this.state.currentFeedback} onGuess={guess => this.setCurrentGuess(guess)} />
                 <GuessCount count={guessCount} />
                 <GuessList guesses={this.state.guessList} />
