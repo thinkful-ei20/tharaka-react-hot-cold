@@ -14,9 +14,11 @@ export default class Game extends React.Component {
             possibleFeedback: ["Hot", "Warm", "Cold", "Ice Cold", "You Won! Click New Game to play again", "Make your guess!"],
             currentFeedback: '',
             guessList: [],
-            currentGuess: '',
+            // currentGuess: '',
             correctNum: Math.floor(Math.random() * 100 + 1),
-            newGame: false
+            newGame: false,
+            showModel: false,
+            showMain: true
         }
     }
 
@@ -52,6 +54,15 @@ export default class Game extends React.Component {
         this.setState({currentFeedback})
     }
 
+    showModelUpdate() {
+        this.setState({showModel: !this.state.showModel});
+    }
+
+    showMainUpdate() {
+        this.setState({showMain: !this.state.showMain});
+        this.setState({showModel: !this.state.showModel});
+    }
+
     setNewGame() {
         const newState = Object.assign({}, this.state);
 
@@ -69,7 +80,7 @@ export default class Game extends React.Component {
 
         return(
             <div>
-                <Header newGame={() => {this.setNewGame()}}/>
+                <Header newGame={() => {this.setNewGame()}} showModel={() => {this.showModelUpdate()}} showMainButton={() => {this.showMainUpdate()}} show={this.state.showModel}/>
                 <GuessSection feedback={this.state.currentFeedback} onGuess={guess => this.setCurrentGuess(guess)} />
                 <GuessCount count={guessCount} />
                 <GuessList guesses={this.state.guessList} />

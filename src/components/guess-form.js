@@ -10,10 +10,13 @@ export default class GuessForm extends React.Component {
 
     processForm(event) {
 		event.preventDefault();
-		const value = this.input.value;
+        const value = this.input.value;
+    
 		if(value){
             if(value > 100) {
-                alert('enter a Number between 0 and 100');
+                alert('Enter a Number between 0 and 100');
+            } else if(isNaN(value)){
+                alert('Please enter a number');
             } else {
                 this.props.onGuess(value);
             }
