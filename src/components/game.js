@@ -11,10 +11,9 @@ export default class Game extends React.Component {
         super(props)
 
         this.state = {
-            possibleFeedback: ["Hot", "Warm", "Cold", "Ice Cold", "You Won! Click New Game to play again", "Make your guess!"],
+            possibleFeedback: ["Hot", "Warm", "Cold", "Ice Cold", "You Won! Click New Game to play again", "Make your guess!"],//Could put this somewhere else because it doesn't change
             currentFeedback: '',
             guessList: [],
-            // currentGuess: '',
             correctNum: Math.floor(Math.random() * 100 + 1),
             newGame: false,
             showModel: false,
@@ -24,29 +23,33 @@ export default class Game extends React.Component {
 
     setCurrentGuess(currentGuess) {
 
-        this.setState({currentGuess});
-        this.setState({guessList:[...this.state.guessList, currentGuess]});
-        
-        const realNum = parseInt(this.state.correctNum);
-        const userNum = parseInt(currentGuess);
-
-        console.log(realNum);
-  
-        if(userNum === realNum){
-            this.setCurretFeedback(this.state.possibleFeedback[4]);
-        } else if((realNum <= userNum + 20) && (realNum >= userNum - 20)) {
-            if((realNum <= userNum + 10) && (realNum >= userNum - 10)) {
-                this.setCurretFeedback(this.state.possibleFeedback[0]);
-            } else {
-                this.setCurretFeedback(this.state.possibleFeedback[1]);
-            }
-        } else if((realNum > userNum + 20) || (realNum < userNum -20)) {
-            if((realNum > userNum + 30) || (realNum < userNum - 30)) {
-                this.setCurretFeedback(this.state.possibleFeedback[3]);
-            } else {
-                this.setCurretFeedback(this.state.possibleFeedback[2]);
-            }
-        } 
+        if(!this.state.guessList.includes(currentGuess)) {
+            this.setState({currentGuess});
+            this.setState({guessList:[...this.state.guessList, currentGuess]});
+            
+            const realNum = parseInt(this.state.correctNum);
+            const userNum = parseInt(currentGuess);
+    
+            console.log(realNum);
+      
+            if(userNum === realNum){
+                this.setCurretFeedback(this.state.possibleFeedback[4]);
+            } else if((realNum <= userNum + 20) && (realNum >= userNum - 20)) {
+                if((realNum <= userNum + 10) && (realNum >= userNum - 10)) {
+                    this.setCurretFeedback(this.state.possibleFeedback[0]);
+                } else {
+                    this.setCurretFeedback(this.state.possibleFeedback[1]);
+                }
+            } else if((realNum > userNum + 20) || (realNum < userNum -20)) {
+                if((realNum > userNum + 30) || (realNum < userNum - 30)) {
+                    this.setCurretFeedback(this.state.possibleFeedback[3]);
+                } else {
+                    this.setCurretFeedback(this.state.possibleFeedback[2]);
+                }
+            } 
+        } else {
+            alert('You guessed this number already')
+        }
         
     }
 
