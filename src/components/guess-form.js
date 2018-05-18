@@ -13,7 +13,7 @@ export default class GuessForm extends React.Component {
         const value = this.input.value;
     
 		if(value){
-            if(value > 100) {
+            if(value > 100 || value < 0) {
                 alert('Enter a Number between 0 and 100');
             } else if(isNaN(value)){
                 alert('Please enter a number');
@@ -28,7 +28,7 @@ export default class GuessForm extends React.Component {
 
         return (
             <form onSubmit={(e) =>  this.processForm(e)}>
-                <input ref={value => this.input = value} type="text" name="userGuess" id="userGuess"
+                <input ref={value => this.input = value} disabled={this.props.won} type="text" name="userGuess" id="userGuess"
                     className="text" maxLength="3" autoComplete="off"
                     placeholder="Enter your Guess" required />
                 <input type="submit" id="guessButton" className="button" name="submit" value="Guess"/>
